@@ -31,6 +31,10 @@ class PaymentRequestValidatorTest  extends TestCase
         if (!$this->isvalidexpiredate($expiration)){
             array_push($errors, "Дата окончания не соответствует необходимому периоду\n");
         }
+        if (!$this->testIscapwords($request["name"])){
+            //Добавил новую проверку, к сожалению работает только с латинскими именами
+            array_push($errors, "Имя и/или фамилия написаны не с заглавной буквы\n");
+        }
         return $errors;
     }
     public function isvalidexpiredate(string $expiredate): bool
@@ -89,9 +93,7 @@ class PaymentRequestValidatorTest  extends TestCase
     }catch(Exception $e) {
         return false;
 
-    }
-        
-        
+    }   
     }
     public function testIsmoretwoletters(array $name_arr): bool
     {
@@ -108,5 +110,17 @@ class PaymentRequestValidatorTest  extends TestCase
     }catch(Exception $e) {
         return false;
     }
+    }
+    public function testIscapwords(string $name): bool
+    {
+        try{
+            $this->assertEquals($name,ucwords($name));
+            return true;
+    }catch(Exception $e) {
+        return false;
+
+    }
+        
+        
     }
 }
