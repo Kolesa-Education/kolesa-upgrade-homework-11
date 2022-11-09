@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/kulti/titlecase"
+	"github.com/stretchr/testify/require"
 )
 
 // Задание
@@ -23,20 +24,30 @@ import (
 // TitleCase("the quick fox in the bag", "") = "The Quick Fox In The Bag"
 // TitleCase("the quick fox in the bag", "in the") = "The Quick Fox in the Bag"
 
+var testCases = []struct {
+	input string
+	minor string
+	expected string
+}{
+	{"the quick fox in the bag", "", "The Quick Fox In The Bag"},
+	{"the quick fox in the bag", "in the", "The Quick Fox in the Bag"},
+	{"the quick fox in the bag", "the quick", "The quick Fox In the Bag"},
+	{"@the quick fox in the bag", "the", "@The Quick Fox In the Bag"},
+	{"the quick @fox in the @bag", "@", "The Quick @Fox In The @Bag"},
+	{"the quick fox in the bag", "t", "The Quick Fox In The Bag"},
+}
+
 func TestEmpty(t *testing.T) {
-	const str, minor, want = "", "", ""
-	got := titlecase.TitleCase(str, minor)
-	if got != want {
-		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	for _, test := range testCases {
+		got := titlecase.TitleCase(test.input, test.minor)
+		if got != test.expected {
+			t.Errorf("TitleCase(%v, %v) = %v; want %v", test.input, test.minor, got, test.expected)
+		}
 	}
 }
 
-func TestWithoutMinor(t *testing.T) {
-	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
-}
-
-func TestWithMinorInFirst(t *testing.T) {
-	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+func TestTitleCase(t *testing.T) {
+	for _, test := range testCases {
+		require.Equal(t, test.expected, titlecase.TitleCase(test.input, test.minor))
+	}
 }
