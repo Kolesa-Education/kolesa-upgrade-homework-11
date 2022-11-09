@@ -17,27 +17,14 @@ class PaymentRequestValidator
     public function validate(array $request): array
     {
         return array_merge(
-            $this->validateNameLength($request),
             $this->validateNameString($request),
+            $this->validateNameLength($request),
             $this->validateCardNumberLength($request),
             $this->validateExpirationFormat($request),
             $this->validateExpirationMaxValues($request),
             $this->validateExpirationMinValues($request),
             $this->validateCVV($request),
         );
-    }
-
-    private function validateNameLength(array $data): array
-    {
-        $nameLength = mb_strlen($data['name']);
-
-        if ($nameLength < self::MIN_NAME_LENGTH) {
-            return [
-                'nameLength' => 'Минимальная длина слова - ' . self::MIN_NAME_LENGTH . ' символа'
-            ];
-        }
-
-        return [];
     }
 
     private function validateNameString(array $data): array
@@ -54,11 +41,38 @@ class PaymentRequestValidator
         return [];
     }
 
+    private function validateNameLength(array $data): array
+    {
+        $name = trim($data['name']);
+        $nameParts = explode(" ", $name);
+
+
+        $firstNameLength = mb_strlen($nameParts[0]);
+
+        if ($firstNameLength < self::MIN_NAME_LENGTH) {
+            return [
+                'nameLength' => 'Минимальная длина слова - ' . self::MIN_NAME_LENGTH . ' символа'
+            ];
+        }
+
+        if (count($nameParts) > 1) {
+            $lastNameLength = mb_strlen($nameParts[1]);
+
+            if ($lastNameLength < self::MIN_NAME_LENGTH) {
+                return [
+                    'nameLength' => 'Минимальная длина слова - ' . self::MIN_NAME_LENGTH . ' символа'
+                ];
+            }
+        }
+
+        return [];
+    }
+
     private function validateCardNumberLength(array $data): array
     {
         $cardNumberLength = mb_strlen($data['cardNumber']);
 
-        if ($cardNumberLength != self::CARD_NUMBER_LENGTH) {
+        if (!is_numeric($cardNumberLength) || $cardNumberLength != self::CARD_NUMBER_LENGTH) {
             return [
                 'cardNumber' => 'Номер карты должен состоять из ' . self::CARD_NUMBER_LENGTH . ' символов'
             ];
@@ -74,7 +88,7 @@ class PaymentRequestValidator
 
         if (!preg_match($pattern, $expirationDate)) {
             return [
-                '$expirationDateFormat' => 'Неверный формат данных, необходимый формат: {число}{число}/{число}{число}',
+                'expirationDateFormat' => 'Неверный формат данных, необходимый формат: {число}{число}/{число}{число}',
             ];
         }
 
@@ -84,15 +98,18 @@ class PaymentRequestValidator
     private function validateExpirationMaxValues(array $data): array
     {
         $expirationDate = explode("/", $data['expiration']);
-        $month = $expirationDate[0];
-        $year = $expirationDate[1];
 
-        if ($month > self::MAX_MONTH_VALUE || $year > self::MAX_YEAR_VALUE) {
-            return [
-                'expirationMaxValues' =>
-                    'Максимальное значение месяца - ' . self::MAX_MONTH_VALUE .
-                    ', максимальное значение года - ' . self::MAX_YEAR_VALUE,
-            ];
+        if (count($expirationDate) > 1) {
+            $month = $expirationDate[0];
+            $year = $expirationDate[1];
+
+            if ($month > self::MAX_MONTH_VALUE || $year > self::MAX_YEAR_VALUE) {
+                return [
+                    'expirationMaxValues' =>
+                        'Максимальное значение месяца - ' . self::MAX_MONTH_VALUE .
+                        ', максимальное значение года - ' . self::MAX_YEAR_VALUE,
+                ];
+            }
         }
 
         return [];
@@ -101,17 +118,19 @@ class PaymentRequestValidator
     private function validateExpirationMinValues(array $data): array
     {
         $expirationDate = explode("/", $data['expiration']);
-        $month = $expirationDate[0];
-        $year = $expirationDate[1];
 
-        if ($month < self::MIN_MONTH_VALUE || $year < self::MIN_YEAR_VALUE) {
-            return [
-                'expirationMaxValues' =>
-                    'Минимальное значение месяца - ' . self::MIN_MONTH_VALUE .
-                    ', минимальное значение года - ' . self::MIN_YEAR_VALUE,
-            ];
+        if (count($expirationDate) > 1) {
+            $month = $expirationDate[0];
+            $year = $expirationDate[1];
+
+            if ($month < self::MIN_MONTH_VALUE || $year < self::MIN_YEAR_VALUE) {
+                return [
+                    'expirationMaxValues' =>
+                        'Минимальное значение месяца - ' . self::MIN_MONTH_VALUE .
+                        ', минимальное значение года - ' . self::MIN_YEAR_VALUE,
+                ];
+            }
         }
-
         return [];
     }
 
