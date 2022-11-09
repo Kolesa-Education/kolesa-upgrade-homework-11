@@ -16,17 +16,7 @@ class PaymentRequestValidator
         $expiration = $request["expiration"];
         $n_arr = explode(" ",$request["name"]);
         $name_count = count($n_arr);
-        if (!$this->isvalidnumber($number)){
-            array_push($errors, "Номер не равен 12 цифрам или содержит сторонние символы");
-        }
 
-        if(!$this->isvalidexpiredate($expiration))
-        {
-            array_push($errors, "Дата не соответствует формату");
-        };
-        if(!$this->isvalidcvv($cvv)){
-            array_push($errors, "CVV не равен 3 цифрам или содержит сторонние символы");
-        };
         if(!$this->Istwowords($name_count)){
             array_push($errors, "Имя не содержит 2 слова");
         };
@@ -37,6 +27,17 @@ class PaymentRequestValidator
         if(!$this->Iscapwords($request["name"])){
             array_push($errors, "Имя или фамилия написаны не с заглавной буквы");
 
+        };
+        if (!$this->isvalidnumber($number)){
+            array_push($errors, "Номер не равен 12 цифрам или содержит сторонние символы");
+        }
+
+        if(!$this->isvalidexpiredate($expiration))
+        {
+            array_push($errors, "Дата не соответствует формату");
+        };
+        if(!$this->isvalidcvv($cvv)){
+            array_push($errors, "CVV не равен 3 цифрам или содержит сторонние символы");
         };
         return $errors;
     }
