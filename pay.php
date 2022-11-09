@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\ReceiptGenerator;
 use App\ReceiptsRepository;
-use App\Validation\PaymentRequestValidatorTest;
+use App\Validation\PaymentRequestValidator;
 
 require_once "vendor/autoload.php";
 
@@ -15,7 +15,7 @@ const DEFAULT_SERVICE = 'Vogue Night Show';
 const DEFAULT_AMOUNT = 5000;
 
 try {
-    $validator = new PaymentRequestValidatorTest();
+    $validator = new PaymentRequestValidator();
 
     $errors = $validator->validate($_POST);
 
