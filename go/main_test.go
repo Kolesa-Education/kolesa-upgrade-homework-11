@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/kulti/titlecase"
+	"github.com/stretchr/testify/assert"
 )
 
 // Задание
@@ -31,12 +32,53 @@ func TestEmpty(t *testing.T) {
 	}
 }
 
+type testCase struct {
+	input string
+	minor string
+	want  string
+}
+
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+
+	testCases := []testCase{
+		{input: "weather is good", minor: "", want: "Weather Is Good"},
+		{input: "aaaa", minor: "", want: "Aaaa"},
+		{input: "", minor: "", want: ""},
+	}
+
+	for _, tc := range testCases {
+		got := titlecase.TitleCase(tc.input, tc.minor)
+		assert.Equal(t, tc.want, got)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	testCases := []testCase{
+		{input: "weather is good", minor: "weather", want: "Weather Is Good"},
+		{input: "aaaa", minor: "aaaa", want: "Aaaa"},
+		{input: "", minor: "", want: ""},
+	}
+
+	for _, tc := range testCases {
+		got := titlecase.TitleCase(tc.input, tc.minor)
+		assert.Equal(t, tc.want, got)
+	}
 }
+
+func TestMoreTwoMinors(t *testing.T) {
+	//minor string has more than one word
+	testCases := []testCase{
+		{input: "my name is denis", minor: "name is", want: "My name is Denis"},
+		{input: "london is the capital of great britain", minor: "is the capital of", want: "London is the capital of Great Britain"},
+		{input: "", minor: "", want: ""},
+	}
+
+	for _, tc := range testCases {
+		got := titlecase.TitleCase(tc.input, tc.minor)
+		assert.Equal(t, tc.want, got)
+	}
+}
+
+
