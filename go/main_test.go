@@ -32,11 +32,25 @@ func TestEmpty(t *testing.T) {
 }
 
 func TestWithoutMinor(t *testing.T) {
-	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	const str, minor, want = "wow that's test string!", "", "Wow That'S Test String!"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
-	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	const str, minor, want = "wow that's test string!", "wow", "Wow That'S Test String!" //First word always capitilized
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
+}
+
+func TestWithMinorShortForm(t *testing.T) {
+	const str, minor, want = "wow that's test string!", "s", "Wow That'S Test String!"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
