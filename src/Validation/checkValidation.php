@@ -23,12 +23,13 @@ class CheckValidation
     public function nameValidator(): array
     {
         $err = [];
-            if (intval($this->name)) {
-                $err[] = "Only use letter";
+        $correctName = explode(" ", $this->name);
+            if (count($correctName) != 2) {
+                $err[] = "ФИ должен принимать в себе 2 слова";
                 return $err;
             }
-            if (mb_strlen($this->name) > 2 || empty($name)) {
-                $err[] = "Имя должно быть не больше 2 символов";
+            if (strlen($correctName[0]) < 2 || strlen($correctName[0]) < 2) {
+                $err[] = "ФИ должно быть не больше 2 символов";
                 return $err;
             }
         return $err;
@@ -36,16 +37,16 @@ class CheckValidation
     public function cardNumberValidator(): array
     {
         $err = [];
-            if (!intval($this->cardNumber) ) {
+        $correctNum = str_split($this->cardNumber);
+
+        foreach ($correctNum as $num) {
+            if (!intval($num)) {
                 $err[]= 'Only use digit';
                 return  $err;
             }
-            if (!filter_var($this->cardNumber, FILTER_VALIDATE_INT) || strlen($this->cardNumber) != 12) {
+        }
+        if (strlen($this->cardNumber) != 12) {
                 $err[] = 'Здесь должно быть только 12 число';
-                return  $err;
-            }
-            if (empty($cardNumber)) {
-                $err[] = 'Поле не может быть пустым';
                 return  $err;
             }
         return  $err;

@@ -7,7 +7,26 @@ use PHPUnit\Framework\TestCase;
 
 class PaymentRequestValidatorTest extends TestCase
 {
-    public function testValidate() {
-        
+     /**
+     * @dataProvider allProvider
+     */
+    public function testValidate($data, $expected)
+    {
+        $validator = new PaymentRequestValidator();
+        $actual = $validator->validate($data);
+        $this->assertEquals($expected, $actual);
+    }
+    public function allProvider(){
+        return [
+            "Valid"=>[
+                [
+                    "name"=> "Manara Kozhamuratova",
+                    "cardNumber" => "123456789123",
+                    "expiration" => "12/26",
+                    "cvv" => "123"
+                ],
+                []
+            ],
+            ];
     }
 }

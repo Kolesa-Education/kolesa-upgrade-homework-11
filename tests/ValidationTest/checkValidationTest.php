@@ -6,7 +6,9 @@ use App\Validation\CheckValidation;
 use PHPUnit\Framework\TestCase;
 
 class CheckValidationTest extends TestCase {
-
+ /**
+     * @dataProvider nameProvider
+     */
     public function testNameValidator($name, $expected)
     {
         $card = new CheckValidation($name, "", "", "");
@@ -17,12 +19,15 @@ class CheckValidationTest extends TestCase {
         return
             [
                 ["Хамбар Дусалиев", []],
-                ["Ли12 Пак", ["Only use letter"]],
-                ["Манара", ["Имя должно быть не больше 2 символов"]],
-                ["A B", ["Имя должно быть не больше 2 символов"]],
-                ["Болат Болатбеков Болатович", ["Имя должно быть не больше 2 символов"]]
+                ["Ли Пак", []],
+                ["Манара", ["ФИ должен принимать в себе 2 слова"]],
+                ["A B", ["ФИ должно быть не больше 2 символов"]],
+                ["Болат Болатбеков Болатович", ["ФИ должен принимать в себе 2 слова"]]
             ];
     }
+     /**
+     * @dataProvider cardNumberProvider
+     */
     public function testCardNumberValidator($cardNumber, $expected)
     {
         $card = new CheckValidation("", $cardNumber, "", "");
@@ -34,9 +39,9 @@ class CheckValidationTest extends TestCase {
     {
         return
             [
-                [str_repeat("1", 12), []],
+                [str_repeat("7", 12), []],
                 [str_repeat("1", 11), ["Здесь должно быть только 12 число"]],
-                [str_repeat("1", 12)."manara", ["Only use digit"]],
+                [str_repeat("3", 11)."q", ["Only use digit"]],
             ];
     }
 
