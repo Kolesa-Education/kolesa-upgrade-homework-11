@@ -8,8 +8,16 @@ class PaymentRequestValidator
 {
     const COUNT_NAME_WORDS = 2;
     const MIN_WORD_LEN = 2;
-    const CARD_LEN = 12;
-    const CVV_LEN = 3;
+    const NAME_COUNT_ERROR = 'name не состоит из' . self::COUNT_NAME_WORDS . '-х слов';
+    const NAME_WORD_LEN_ERROR = 'длина составляющих name меньше' .  self::MIN_WORD_LEN . '-х символов';
+    const NOT_DIGIT_ERROR = 'номер карты состоит не только из цифр';
+    const CARD_NUMBER_LEN_ERROR = 'номер карты не 12 символов';
+    const EXPIRATION_FORMAT_ERROR = 'формат expiration не соответствует шаблону';
+    const EXPIRATION_DIGITS_ERROR = 'числа в expiration не состоят из 2-х цифр';
+    const FIRST_DIGIT_ERROR = 'первое число в expiration указано неправильно';
+    const SECOND_DIGIT_ERROR = 'второе число в expiration указано неправильно';
+    const CVV_ERROR = 'cvv не состоит из 3-х чисел';
+
 
     public function validate(array $request): array
     {
@@ -28,11 +36,11 @@ class PaymentRequestValidator
         $words = explode(" ", $name);
         
         if (count($words) !== self::COUNT_NAME_WORDS) {
-            $result[] = 'name не состоит их 2-х слов';
+            $result[] = self::NAME_COUNT_ERROR;
         }
 
         if (strlen($words[0]) < self::MIN_WORD_LEN || strlen($words[1]) < self::MIN_WORD_LEN) {
-            $result[] = 'длина составляющих name меньше 2-х символов';
+            $result[] = self::NAME_WORD_LEN_ERROR;
         }
 
         return $result;
@@ -43,11 +51,11 @@ class PaymentRequestValidator
         $result = [];
 
         if (!is_numeric($cardNumber)) {
-            $result[] = 'номер карты состоит не только из цифр';
+            $result[] = self::NOT_DIGIT_ERROR;
         }
 
-        if (strlen($cardNumber) !== self::CARD_LEN) {
-            $result[] = 'номер карты не 12 символов';
+        if (strlen($cardNumber) !== 12) {
+            $result[] = self::CARD_NUMBER_LEN_ERROR;
         }
 
         return $result;
@@ -60,21 +68,21 @@ class PaymentRequestValidator
         $pattern = "[^0-9][^0-9]/[^0-9][^0-9]";
 
         if (!preg_match($pattern, $date)) {
-            $result[] = 'формат expiration не соответствует шаблону';
+            $result[] = self::EXPIRATION_FORMAT_ERROR;
         }
 
         $digits = explode("/", $date);
 
         if (strlen($digits[0]) !== 2 || strlen($digits[1]) !== 2) {
-            $result[] = 'числа в expiration не состоят из 2-х цифр';
+            $result[] = self::EXPIRATION_DIGITS_ERROR;
         }
 
         if ($digits[0] > 12 || $digits[0] < 1) {
-            $result[] = 'первое число в expiration указано неправильно';
+            $result[] = self::FIRST_DIGIT_ERROR;
         }
 
         if ($digits[1] > 25 || $digits[1] < 22) {
-            $result[] = 'второе число в expiration указано неправильно'; 
+            $result[] = self::SECOND_DIGIT_ERROR; 
         }
 
         return $result;
@@ -85,7 +93,7 @@ class PaymentRequestValidator
         $result = array_merge($this->validateCardNumber($cardNumber), $this->validateExpirationDate($expiration));
 
         if (strlen($cvv) !== 3) {
-            array_merge($result, ['cvv не состоит из 3-х чисел']);
+            array_merge($result, [self::CVV_ERROR]);
         }
 
         return $result;
