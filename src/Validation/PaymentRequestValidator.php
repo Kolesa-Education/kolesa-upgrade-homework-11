@@ -39,8 +39,10 @@ class PaymentRequestValidator
             $result[] = self::NAME_COUNT_ERROR;
         }
 
-        if (strlen($words[0]) < self::MIN_WORD_LEN || strlen($words[1]) < self::MIN_WORD_LEN) {
-            $result[] = self::NAME_WORD_LEN_ERROR;
+        foreach ($words as $word) {
+            if (strlen($word) < self::MIN_WORD_LEN) {
+                $result[] = self::NAME_WORD_LEN_ERROR;
+            }
         }
 
         return $result;
@@ -73,18 +75,20 @@ class PaymentRequestValidator
 
         $digits = explode("/", $date);
 
-        if (strlen($digits[0]) !== 2 || strlen($digits[1]) !== 2) {
-            $result[] = self::EXPIRATION_DIGITS_ERROR;
+        if (count($digits) === 2) {
+            if (strlen($digits[0]) !== 2 || strlen($digits[1]) !== 2) {
+                $result[] = self::EXPIRATION_DIGITS_ERROR;
+            }
+    
+            if ($digits[0] > 12 || $digits[0] < 1) {
+                $result[] = self::FIRST_DIGIT_ERROR;
+            }
+    
+            if ($digits[1] > 25 || $digits[1] < 22) {
+                $result[] = self::SECOND_DIGIT_ERROR; 
+            }    
         }
-
-        if ($digits[0] > 12 || $digits[0] < 1) {
-            $result[] = self::FIRST_DIGIT_ERROR;
-        }
-
-        if ($digits[1] > 25 || $digits[1] < 22) {
-            $result[] = self::SECOND_DIGIT_ERROR; 
-        }
-
+        
         return $result;
     }
 
