@@ -14,19 +14,21 @@ const RECEIPTS_DIR = __DIR__ . '/receipts';
 const DEFAULT_SERVICE = 'Vogue Night Show';
 const DEFAULT_AMOUNT = 5000;
 
+
+
 try {
     $validator = new PaymentRequestValidator();
 
     $errors = $validator->validate($_POST);
+    
 
     // если валидатор вернул ошибки - склеиваем их в одну строку и выбрасываем исключение
-    if (!empty($errors)) {
+    if (empty($errors)) {
         $errorsString = '';
 
         foreach ($errors as $error) {
             $errorsString .= $error . PHP_EOL;
         }
-
         throw new \Exception('Невалидный запрос' . PHP_EOL . $errorsString);
     }
 
@@ -43,7 +45,7 @@ try {
 
     $receiptsRepository = new ReceiptsRepository(RECEIPTS_DIR);
 
-    $receiptsRepository->save(time().'.txt', $receipt);
+    $receiptsRepository->save(time() . '.txt', $receipt);
 } catch (\Throwable $e) {
     die($e->getMessage());
 }
