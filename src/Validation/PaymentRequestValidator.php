@@ -17,6 +17,10 @@ class PaymentRequestValidator
 		if(strlen($nameValidationResult)!==0){
            array_push($result, $nameValidationResult); 
         }
+        $cardNameValidationResult = $this->validateCardNumber($request["cardNumber"]);
+        if(strlen($cardNameValidationResult)!==0){
+            array_push($result, $cardNameValidationResult);
+        }
         return $result;
         
 
@@ -34,5 +38,16 @@ class PaymentRequestValidator
 			}
 		}
 		return "";
-	}	 			 
+	}	 			
+    
+    public function validateCardNumber(string $number): string
+    {
+        if(!is_numeric($number)){
+            return "В номере должны быть только цифры";
+        }
+        if(strlen($number)!== self::CARD_NUM_LEN){
+            return "Номер карты должен состоять из " . self::CARD_NUM_LEN . " символов";
+        }
+        return "";
+    }
 }
