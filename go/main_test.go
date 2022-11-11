@@ -33,10 +33,26 @@ func TestEmpty(t *testing.T) {
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	const str, minor, want = "my favorite", "", "My Favorite"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	const str, minor, want = "no second thoughts", "no", "No Second Thoughts"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
+}
+
+func TestAllWordsMinor(t *testing.T) {
+	const str, minor, want = "no second thoughts", "no second thoughts", "No second thoughts"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
