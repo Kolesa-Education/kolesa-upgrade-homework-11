@@ -51,13 +51,13 @@ class PaymentRequestValidator
     public function validateCardNumber(string $cardNumber): array
     {
         $result = [];
+        
+        if (strlen($cardNumber) !== 12) {
+            $result[] = self::CARD_NUMBER_LEN_ERROR;
+        }
 
         if (!is_numeric($cardNumber)) {
             $result[] = self::NOT_DIGIT_ERROR;
-        }
-
-        if (strlen($cardNumber) !== 12) {
-            $result[] = self::CARD_NUMBER_LEN_ERROR;
         }
 
         return $result;
@@ -67,13 +67,11 @@ class PaymentRequestValidator
     {
         $result = [];
 
-        $pattern = "[^0-9][^0-9]/[^0-9][^0-9]";
+        $digits = explode("/", $date);
 
-        if (!preg_match($pattern, $date)) {
+        if (count($digits) != 2 || count($digits) === 2 && (!is_numeric($digits[0]) || !is_numeric($digits[1]))) {
             $result[] = self::EXPIRATION_FORMAT_ERROR;
         }
-
-        $digits = explode("/", $date);
 
         if (count($digits) === 2) {
             if (strlen($digits[0]) !== 2 || strlen($digits[1]) !== 2) {
@@ -96,8 +94,8 @@ class PaymentRequestValidator
     {
         $result = array_merge($this->validateCardNumber($cardNumber), $this->validateExpirationDate($expiration));
 
-        if (strlen($cvv) !== 3) {
-            array_merge($result, [self::CVV_ERROR]);
+        if (strlen($cvv) != 3 || !is_numeric($cvv)) {
+            $result = array_merge($result, [self::CVV_ERROR]);
         }
 
         return $result;
