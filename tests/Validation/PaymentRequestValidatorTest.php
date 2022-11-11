@@ -26,7 +26,7 @@ class PaymentRequestValidatorTest extends TestCase
             [
                 [
                     "name" => "Хамбар Дусалиев",
-                    "cardNumber" => str_repeat("1", 12),
+                    "cardNumber" => str_repeat("4", 12),
                     "expiration" => "01/25",
                     "cvv" => "023"
                 ],
@@ -71,7 +71,17 @@ class PaymentRequestValidatorTest extends TestCase
                     "Не соответствует количество символов expiration",
                     "CVV должен состоять из 3 цифр"
                 ]
-            ]
+            ],
+            "Everything is null" =>
+            [
+              [],
+              [
+                  "name не состоит из 2 слов",
+                  "CardNumber не состоит из 12 символов",
+                  "Не соответствует количество символов expiration",
+                  "CVV должен состоять из 3 цифр"
+              ]
+            ],
         ];
     }
 }

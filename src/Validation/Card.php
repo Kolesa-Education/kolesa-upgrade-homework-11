@@ -19,87 +19,75 @@ class Card
 
     public function validateName (): array
     {
-        $errors = [];
         $nameSplitted = explode(" ", $this->name);
         if (count($nameSplitted) != 2){
-            $errors[] = "name не состоит из 2 слов";
-            return $errors;
+            return ["name не состоит из 2 слов"];
         }
         if (strlen($nameSplitted[0]) < 2 || strlen($nameSplitted[1]) < 2){
-            $errors[] = "Имя и фамилия меньше 2 символов";
-            return $errors;
+            return ["name и фамилия меньше 2 символов"];
         }
-        return $errors;
+        //Костыль для русского языка ctype_alpha() поддерживает только латиницу
+        foreach ($nameSplitted as $namePart) {
+            foreach (str_split($namePart, 1) as $symbol) {
+                if (ctype_punct($symbol) || ctype_digit($symbol)){
+                    return ["name содержит недопустимые символы"];
+                }
+            }
+        }
+        return [];
     }
 
     public function validateCardNumber(): array
     {
-        $errors = [];
         $symbols = str_split($this->cardNumber);
         if (count($symbols) != 12) {
-            $errors[] = "CardNumber не состоит из 12 символов";
-            return $errors;
+            return ["CardNumber не состоит из 12 символов"];
         }
-        foreach ($symbols as $symbol){
-            if (!$this->isInt($symbol)){
-                $errors[] = "CardNumber содержит не только символы";
-                return $errors;
-            }
+        if (!ctype_digit($this->cardNumber)){
+            return ["CardNumber содержит не только символы"];
         }
-        return $errors;
+        if (
+            $symbols[0] != 3 && //American Express
+            $symbols[0] != 4 && //Visa
+            $symbols[0] != 5 && //Mastercard
+            $symbols[0] != 6 //Discover Cards
+        ){
+            return ["CardNumber неизвестной компании"];
+        }
+        return [];
     }
 
     public function validateExpiration(): array
     {
-        $errors = [];
         $symbols = str_split($this->expiration);
         if (count($symbols) != 5) {
-            $errors[] = "Не соответствует количество символов expiration";
-            return $errors;
+            return ["Не соответствует количество символов expiration"];
         }
         for ($i = 0; $i < 5; $i++){
-            if (!$this->isInt($symbols[$i]) && $i != 2){
-                $errors[] = "expiration не в формате 00/00";
-                return $errors;
+            if (!ctype_digit($symbols[$i]) && $i != 2){
+                return ["expiration не в формате 00/00"];
             }
         }
         if ($symbols[2] !== "/"){
-            $errors[] = "expiration не разделен с помощью '/'";
-            return $errors;
+            return ["expiration не разделен с помощью '/'"];
         }
         $month = intval($symbols[0] . $symbols[1]);
         $year = intval($symbols[3] . $symbols[4]);
         if (($month<1 || $month>12) || ($year<22 || $year>25)){
-            $errors[] = "Невалидное значение месяца или года expiration";
-            return $errors;
+            return ["Невалидное значение месяца или года expiration"];
         }
-        return $errors;
+        return [];
     }
 
     public function validateCvv(): array
     {
-        $errors = [];
         $symbols = str_split($this->cvv);
         if (count($symbols) != 3){
-            $errors[] = "CVV должен состоять из 3 цифр";
-            return $errors;
+            return ["CVV должен состоять из 3 цифр"];
         }
-        foreach ($symbols as $symbol){
-            if (!$this->isInt($symbol)){
-                $errors[] = "CVV должен состоять из 3 цифр";
-                return $errors;
+            if (!ctype_digit($this->cvv)){
+                return ["CVV должен состоять из 3 цифр"];
             }
-        }
-        return $errors;
+        return [];
     }
-
-    protected function isInt($string): bool
-    {
-        if (intval($string) != $string){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 }

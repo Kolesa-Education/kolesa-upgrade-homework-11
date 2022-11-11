@@ -10,7 +10,11 @@ class PaymentRequestValidator
 {
     public function validate(array $request): array
     {
-        $card = new Card($request["name"], $request["cardNumber"], $request["expiration"], $request["cvv"]);
+        $name = $request["name"] ?? "";
+        $cardNumber = $request["cardNumber"] ?? "";
+        $expiration = $request["expiration"] ?? "";
+        $cvv = $request["cvv"] ?? "";
+        $card = new Card($name, $cardNumber, $expiration, $cvv);
         $nameErrors = $card->validateName() ?? null;
         $cardNumberErrors = $card->validateCardNumber() ?? null;
         $expirationErrors = $card->validateExpiration() ?? null;
