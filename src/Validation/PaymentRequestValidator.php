@@ -8,8 +8,8 @@ class PaymentRequestValidator
 {
     const COUNT_NAME_WORDS = 2;
     const MIN_WORD_LEN = 2;
-    const NAME_COUNT_ERROR = 'name не состоит из' . self::COUNT_NAME_WORDS . '-х слов';
-    const NAME_WORD_LEN_ERROR = 'длина составляющих name меньше' .  self::MIN_WORD_LEN . '-х символов';
+    const NAME_COUNT_ERROR = 'name не состоит из ' . self::COUNT_NAME_WORDS . '-х слов';
+    const NAME_WORD_LEN_ERROR = 'длина составляющих name меньше ' .  self::MIN_WORD_LEN . '-х символов';
     const NOT_DIGIT_ERROR = 'номер карты состоит не только из цифр';
     const CARD_NUMBER_LEN_ERROR = 'номер карты не 12 символов';
     const EXPIRATION_FORMAT_ERROR = 'формат expiration не соответствует шаблону';

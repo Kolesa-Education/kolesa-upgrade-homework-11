@@ -10,14 +10,40 @@ class PaymentRequestValidatorTest extends TestCase
 {
     public function testNameValidation(): void
     {
-        $expected = [PaymentRequestValidator::NAME_COUNT_ERROR];
-
         $generator = new PaymentRequestValidator();
 
-        $actual = $generator->validateName(
-            "Markhabat"
-        );
+        $wrongWordCounts = ["Markhabat", "Robert Downey Jr"];
+        $wrongBoth = ["M", ""];
+        $correctValues = ["Sleeping Beauty", "Tee Aa"];
 
-        $this->assertEquals($expected, $actual);
+        foreach ($wrongWordCounts as $val) {
+            $expected = [PaymentRequestValidator::NAME_COUNT_ERROR];
+
+            $actual = $generator->validateName(
+                $val
+            );
+    
+            $this->assertEquals($expected, $actual);
+        }
+
+        foreach ($wrongBoth as $val) {
+            $expected = [PaymentRequestValidator::NAME_COUNT_ERROR, PaymentRequestValidator::NAME_WORD_LEN_ERROR];
+
+            $actual = $generator->validateName(
+                $val
+            );
+    
+            $this->assertEquals($expected, $actual);
+        }
+
+        foreach ($correctValues as $val) {
+            $expected = [];
+
+            $actual = $generator->validateName(
+                $val
+            );
+    
+            $this->assertEquals($expected, $actual);
+        }
     }
 }
