@@ -16,7 +16,6 @@ const DEFAULT_AMOUNT = 5000;
 
 try {
     $validator = new PaymentRequestValidator();
-    print_r($_POST);
     $errors = $validator->validate($_POST);
 
     // если валидатор вернул ошибки - склеиваем их в одну строку и выбрасываем исключение
@@ -43,10 +42,10 @@ try {
 
     $receiptsRepository = new ReceiptsRepository(RECEIPTS_DIR);
 
-    $receiptsRepository->save(time().'.txt', $receipt);
+    // $receiptsRepository->save(time().'.txt', $receipt);
 } catch (\Throwable $e) {
     die($e->getMessage());
 }
 
-header('Location: http://localhost:8000');
-die('successful payment');
+// header('Location: http://localhost:8080');
+// die('successful payment');
