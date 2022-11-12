@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/kulti/titlecase"
+	"github.com/stretchr/testify/require"
 )
 
 // Задание
@@ -33,10 +35,70 @@ func TestEmpty(t *testing.T) {
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	tests := []struct {
+		str,
+		minor,
+		want string
+	}{
+		{"it was testing", "", "It Was Testing"},
+		{"  There was no show", "", "  There Was No Show"},
+		{"ALL THE WORDS ARE CAPITAL", "", "All The Words Are Capital"},
+	}
+
+	for i, tc := range tests {
+		got := titlecase.TitleCase(tc.str, tc.minor)
+		errMsg := fmt.Sprintf("Test %d: got Titlecase(\"%v\", \"%v\")= \"%v\", want \"%v\"",
+			i, tc.str, tc.minor, got, tc.want)
+
+		require.Equal(t, tc.want, got, errMsg)
+	}
+
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+
+	tests := []struct {
+		str,
+		minor,
+		want string
+	}{
+		{"simple testing with uncapitalized first world", "simple", "Simple Testing With Uncapitalized First World"},
+		{"  there space at the beginning", "there", "  there Space At The Beginning"},
+		{"THE first world is capitalized", "THE", "The First World Is Capitalized"},
+	}
+
+	for i, tc := range tests {
+		got := titlecase.TitleCase(tc.str, tc.minor)
+		errMsg := fmt.Sprintf("Test %d: got Titlecase(\"%v\", \"%v\")= \"%v\", want \"%v\"",
+			i, tc.str, tc.minor, got, tc.want)
+
+		require.Equal(t, tc.want, got, errMsg)
+	}
+}
+
+func TestSeveralMinors(t *testing.T) {
+	// передайте несколько слов исходной строки в качестве второго аргумента
+
+	tests := []struct {
+		str,
+		minor,
+		want string
+	}{
+
+		{"there are several minores at the sentence", "are at the", "There are Several Minores at the Sentence"},
+		{"first word with another minor", "with first", "First Word with Another Minor"},
+		{"Sentence with no minor", "no, are", "Sentence With No Minor"},
+		{"capitalized MINOR example title", "MINOR title", "Capitalized Minor Example title"},
+		{"   some space before minor world", "minor some", "   some Space Before minor World"},
+		{"all the words are minor", "all the words are minor", "All the words are minor"},
+	}
+
+	for i, tc := range tests {
+		got := titlecase.TitleCase(tc.str, tc.minor)
+		errMsg := fmt.Sprintf("Test %d: got Titlecase(\"%v\", \"%v\")= \"%v\", want \"%v\"",
+			i, tc.str, tc.minor, got, tc.want)
+
+		require.Equal(t, tc.want, got, errMsg)
+	}
 }
