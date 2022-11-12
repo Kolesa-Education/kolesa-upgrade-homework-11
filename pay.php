@@ -42,7 +42,7 @@ try {
 
     $receiptsRepository = new ReceiptsRepository(RECEIPTS_DIR);
 
-    // $receiptsRepository->save(time().'.txt', $receipt);
+    $receiptsRepository->save(time().'.txt', $receipt);
 } catch (\Throwable $e) {
     die($e->getMessage());
 }
