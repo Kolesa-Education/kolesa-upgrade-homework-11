@@ -16,8 +16,6 @@ class PaymentRequestValidatorTest extends TestCase
         $actual = $validator->validate($request);
 
         $this->assertEquals($expected, $actual);
-
-        // $this->assertEmpty($actual,implode(",\n",$actual));
     }
 
     public function arrayProvider()
