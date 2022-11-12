@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/stretchr/testify/require"
 	"testing"
 
 	"github.com/kulti/titlecase"
@@ -32,11 +33,48 @@ func TestEmpty(t *testing.T) {
 }
 
 func TestWithoutMinor(t *testing.T) {
-	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	const str, minor, want = "the quick brown fox", "", "The Quick Brown Fox"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
-	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	const str, minor, want = "the quick brown fox", "in of the", "The Quick Brown Fox"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
+}
+
+func TestWithCapital(t *testing.T) {
+	const str, minor, want = "tHe QUICK brOWn foX IN The bag", "in of the", "The Quick Brown Fox in the Bag"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
+}
+
+func TestTitleCase(t *testing.T) {
+	tests := []struct {
+		name     string
+		str      string
+		minor    string
+		expected string
+	}{
+		{"empty", "", "", ""},
+		{"wo_str", "", "my name is", ""},
+		{"wo_minor", "hello my name is almat", "my name is", "Hello my name is Almat"},
+		{"minor_first", "am i a student", "am a student", "Am I student"},
+		{"full", "hello my name is almat", "my name is", "Hello my name is Almat"},
+		{"with_capital", "Hello My Name Is Almat", "my name is", "Hello my name is Almat"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			require.Equal(t, tc.expected, titlecase.TitleCase(tc.str, tc.minor))
+		})
+	}
 }
