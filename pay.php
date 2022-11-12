@@ -18,6 +18,7 @@ try {
     $validator = new PaymentRequestValidator();
 
     $errors = $validator->validate($_POST);
+    echo $_POST;
 
     // если валидатор вернул ошибки - склеиваем их в одну строку и выбрасываем исключение
     if (!empty($errors)) {
