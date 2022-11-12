@@ -26,10 +26,11 @@ class PaymentRequestValidator
     {
         $msg = "";
         $fullName = explode(" ", $name);
-        if (count($fullName) <2){
-            $msg = "Name on card must conteins your full name (name surname)!!!";
-        } else if ((strlen($fullName[0] ) < 2) || (strlen($fullName[1]) < 2)){
-            $msg = "Name and surname must have at least 2 symbols length!!!";
+        if (count($fullName) < 2 || count($fullName) > 2){
+            return "Name on card must conteins your full name (name surname)!!!";
+        }
+        if ((strlen($fullName[0]) < 2) || (strlen($fullName[1]) < 2)){
+            return "Name and surname must have at least 2 symbols length!!!";
         }
 
         return $msg;
@@ -40,7 +41,14 @@ class PaymentRequestValidator
         $msg = "";
         $cardNumber = str_replace(" ", "", $cardNumber);
         if (strlen($cardNumber) < 12){
-            $msg = "Card number's length must be 12 symbols!!!";
+            return "Card number's length must be 12 symbols!!!";
+        }
+
+        $cardNumberChars = str_split($cardNumber);
+        foreach ($cardNumberChars as $char){
+            if (!is_numeric($char)){
+               return "Invalid card number!!!";
+            }
         }
 
         return $msg;
@@ -74,8 +82,16 @@ class PaymentRequestValidator
         $msg = "";
         $cvv = str_split($cvv);
         if ((count($cvv) < 3) || (count($cvv) > 3)){
-            $msg = "Invalid cvv length!!!";
-        } else if (($cvv[1] == 0) || ($cvv[2] == 0)){
+            return "Invalid cvv length!!!";
+        }
+
+        foreach ($cvv as $char) {
+            if (!is_numeric($char)){
+                return "cvv must be three digit number!!!";
+            }
+        }
+
+        if (($cvv[1] == 0) || ($cvv[2] == 0)){
             $msg = "Invalid cvv!!!";
         }
 
