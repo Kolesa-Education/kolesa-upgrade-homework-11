@@ -27,7 +27,7 @@ try {
             $errorsString .= $error . PHP_EOL;
         }
 
-        throw new \Exception('Невалидный запрос' . PHP_EOL . $errorsString);
+        throw new \Exception('Невалидный запрос:' . PHP_EOL . $errorsString);
     }
 
     // производим оплату: списываем деньги, помечаем что услуга оплачена и т.д.
