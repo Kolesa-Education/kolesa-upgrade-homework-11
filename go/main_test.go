@@ -33,10 +33,27 @@ func TestEmpty(t *testing.T) {
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+    const str, minor, want = "the quick fox in the bag", "", "The Quick Fox In The Bag"
+    got := titlecase.TitleCase(str, minor)
+    if got != want {
+    		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+    }
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	const str, minor, want = "the quick fox in the bag", "in the", "The Quick Fox in the Bag"
+    got := titlecase.TitleCase(str, minor)
+    if got != want {
+        t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+    }
+}
+
+func TestForFirstLetter(t *testing.T){
+    //Первое слово должно быть всегда с большой буквы
+    const str, minor, want = "the quick fox in the bag", "the quick", "The quick Fox In The Bag"
+    got := titlecase.TitleCase(str, minor)
+    if got != want {
+        t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+    }
 }
