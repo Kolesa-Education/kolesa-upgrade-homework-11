@@ -8,6 +8,6 @@ class PaymentRequestValidator
 {
     public function validate(array $request): array
     {
-        //  здесь должен быть код валидации запроса
+        return [];
     }
 }
