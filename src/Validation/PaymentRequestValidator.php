@@ -13,7 +13,7 @@ class PaymentRequestValidator
          
          $name = $request['name'];  // array of FirstName, LastName and LastName
          
-         $err  = $this->testName($name);
+         $err  = $this->isValidName($name);
          if (count($err)!=0){
             $err_msg =array_merge($err_msg,$err);
          }
@@ -21,26 +21,26 @@ class PaymentRequestValidator
          $cardNumber = $request['cardNumber'];
          str_replace(" ", "", $cardNumber);
 
-         $err  = $this->testCard($cardNumber);
+         $err  = $this->isValidCard($cardNumber);
          if (count($err)!=0){
             $err_msg =array_merge($err_msg,$err);
          }
          
          $expiration = $request['expiration'];
          
-         $err  = $this->testExpiration($expiration);
+         $err  = $this->isValidExpiration($expiration);
          if (count($err)!=0){
             $err_msg =array_merge($err_msg,$err);
          }
 
          $cvv = $request['cvv'];
-         $err  = $this->testCVV($cvv);
+         $err  = $this->isValidCVV($cvv);
          if (count($err)!=0){
             $err_msg =array_merge($err_msg,$err);
          }
          return $err_msg;
     }
-    public function testName( array $name):array {
+    public function isValidName( array $name):array {
         $err = [];
         if (count($name) != 2){
             array_push($err, "Error->name: Number of arguments");    
@@ -55,7 +55,7 @@ class PaymentRequestValidator
         }
         return $err;
     }
-    public function testCard( string $card):array {
+    public function isValidCard( string $card):array {
        $err = [];
        if (strlen($card) != 12){
         array_push($err, "Error->cardNumber: Number of digits");    
@@ -65,7 +65,7 @@ class PaymentRequestValidator
        }
        return $err;
     }
-    public function testExpiration(string $expiration):array{
+    public function isValidExpiration(string $expiration):array{
         $err = [];
         if (str_contains($expiration, '/')) {
             array_push($err, "Error->expiration: Number of digits");    
@@ -81,7 +81,7 @@ class PaymentRequestValidator
         return $err;
     }
 
-    public function testCVV( string $cvv):array {
+    public function isValidCVV( string $cvv):array {
         $err = [];
         if (strlen($cvv) != 3){
          array_push($err, "Error->CVV: Number of digits");    
