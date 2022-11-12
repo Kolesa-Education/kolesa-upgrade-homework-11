@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/kulti/titlecase"
+	"github.com/stretchr/testify/require"
 )
 
 // Задание
@@ -23,6 +24,12 @@ import (
 // TitleCase("the quick fox in the bag", "") = "The Quick Fox In The Bag"
 // TitleCase("the quick fox in the bag", "in the") = "The Quick Fox in the Bag"
 
+type testCase struct {
+	str   string
+	minor string
+	want  string
+}
+
 func TestEmpty(t *testing.T) {
 	const str, minor, want = "", "", ""
 	got := titlecase.TitleCase(str, minor)
@@ -33,10 +40,58 @@ func TestEmpty(t *testing.T) {
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	testCases := []testCase{
+		{str: "i am rich", minor: "", want: "I Am Rich"},
+		{str: "go away", minor: "", want: "Go Away"},
+		{str: "stuff", minor: "", want: "Stuff"},
+	}
+
+	for _, tc := range testCases {
+		actual := titlecase.TitleCase(tc.str, tc.minor)
+		require.Equal(t, tc.want, actual)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	testCases := []testCase{
+		{str: "what is the matter with you", minor: "what", want: "What Is The Matter With You"},
+		{str: "qqqq", minor: "qqqq", want: "Qqqq"},
+		{str: "smells like teen spirit", minor: "smells", want: "Smells Like Teen Spirit"},
+	}
+
+	for _, tc := range testCases {
+		actual := titlecase.TitleCase(tc.str, tc.minor)
+		require.Equal(t, tc.want, actual)
+	}
+}
+
+func TestWithMinorInSecond(t *testing.T) {
+
+	testCases := []testCase{
+		{str: "what is the matter with you", minor: "is the", want: "What is the Matter With You"},
+		{str: "qqqq aaaa bbb", minor: "aaaa", want: "Qqqq aaaa Bbb"},
+		{str: "smells like teen spirit", minor: "like teen", want: "Smells like teen Spirit"},
+	}
+
+	for _, tc := range testCases {
+		actual := titlecase.TitleCase(tc.str, tc.minor)
+		require.Equal(t, tc.want, actual)
+	}
+
+}
+
+func TestWithWrongWordInMinorInSecond(t *testing.T) {
+
+	testCases := []testCase{
+		{str: "what is the matter with you", minor: "is thea", want: "What is The Matter With You"},
+		{str: "qqqq aaaa bbb", minor: "aqaa bbb", want: "Qqqq Aaaa bbb"},
+		{str: "smells like teen spirit", minor: "liqe teen", want: "Smells Like teen Spirit"},
+	}
+
+	for _, tc := range testCases {
+		actual := titlecase.TitleCase(tc.str, tc.minor)
+		require.Equal(t, tc.want, actual)
+	}
+
 }
