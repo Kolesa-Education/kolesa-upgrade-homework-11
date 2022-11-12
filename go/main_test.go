@@ -1,9 +1,9 @@
 package main
 
 import (
-	"testing"
-
 	"github.com/kulti/titlecase"
+	"github.com/stretchr/testify/require"
+	"testing"
 )
 
 // Задание
@@ -26,17 +26,29 @@ import (
 func TestEmpty(t *testing.T) {
 	const str, minor, want = "", "", ""
 	got := titlecase.TitleCase(str, minor)
-	if got != want {
-		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
-	}
+	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+	require.Equal(t, got, want, msg)
 }
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	const str, minor, want = "teenage mutant ninja turtles", "", "Teenage Mutant Ninja Turtles"
+	got := titlecase.TitleCase(str, minor)
+	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+	require.Equal(t, got, want, msg)
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	const str, minor, want = "teenage mutant ninja turtles", "teenage", "Teenage Mutant Ninja Turtles"
+	got := titlecase.TitleCase(str, minor)
+	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+	require.Equal(t, got, want, msg)
+}
+
+func TestWithEmptyStr(t *testing.T) {
+	const str, minor, want = "", "", ""
+	got := titlecase.TitleCase(str, minor)
+	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+	require.Equal(t, got, want, msg)
 }
