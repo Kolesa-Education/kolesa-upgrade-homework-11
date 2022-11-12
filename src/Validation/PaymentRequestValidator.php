@@ -13,13 +13,27 @@ class PaymentRequestValidator
         $expiration = $request['expiration'] ?? null;
         $cvv = $request['cvv'] ?? null;
 
-        $isNameValid = self::checkName($name);
-        $isCardNumberValid = self::checkCardNumber($cardNumber);
-        $isExpirationValid = self::checkExpiration($expiration);
-        $isCvvValid = self::checkCvv($cvv);
-        print_r("CVV:");
-        print_r($isCvvValid ? "valid" : "invalid");
-        return [];
+        $errors = [];
+
+        
+        if (!self::checkName($name)) {
+            array_push($errors, "Name is incorrect.");
+        }
+
+        if (!self::checkCardNumber($cardNumber)) {
+            array_push($errors, "Card number is incorrect.");
+        }
+
+        if (!self::checkExpiration($expiration)) {
+            array_push($errors, "Expiration is invalid.");
+        }
+
+        if (!self::checkCvv($cvv)) {
+            array_push($errors, "Invalid CVV.");
+        };
+        
+
+        return $errors;
     }
 
     private function checkName(string $name): bool
