@@ -27,19 +27,17 @@ import (
 func TestEmpty(t *testing.T) {
 	const str, minor, want = "", "", ""
 	got := titlecase.TitleCase(str, minor)
-	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
-	require.Equal(t, got, want, msg)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
-
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
 	t.Error("not implemented")
-	const str, minor, want = "teenage mutant ninja turtles", "teenage", "Teenage Mutant Ninja Turtles"
+	const str, minor, want = "The Quick Fox in the Bag", "", "The Quick Fox in the Bag"
 	got := titlecase.TitleCase(str, minor)
 	if got != want {
-		// передайте пустую строку в качестве второго агрумента
-		msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
-		require.Equal(t, got, want, msg)
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
 	}
 }
 
@@ -49,14 +47,14 @@ func TestWithMinorInFirst(t *testing.T) {
 	const str, minor, want = "the quick fox in the bag", "the", "the quick fox in the bag"
 	got := titlecase.TitleCase(str, minor)
 	if got != want {
-		// передайте первое слово исходной строки в качестве второго аргумента
-		msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
-		require.Equal(t, got, want, msg)
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
 	}
 }
-func TestWithEmptyStr(t *testing.T) {
-	const str, minor, want = "", "", ""
+func TestAllMinor(t *testing.T) {
+	// передайте всю строку в качестве второго аргумента
+	t.Error("not implemented")
+	const str, minor, want = "the quick fox in the bag", "the quick fox in the bag", "the quick fox in the bag"
 	got := titlecase.TitleCase(str, minor)
-	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
-	require.Equal(t, got, want, msg)
-}
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
