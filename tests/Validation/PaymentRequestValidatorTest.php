@@ -142,4 +142,21 @@ class PaymentRequestValidatorTest extends TestCase
             $this->assertEquals($expected, $actual);
         }
     }
+
+    public function testAllCorrect(): void
+    {
+        $testInputs = array(
+            'name' => 'John Doe',
+            'cardNumber' => '1234123412341234',
+            'expiration' => '12/23',
+            'cvv' => '012'
+        );
+
+        $expected = [];
+
+        $validator = new PaymentRequestValidator();
+
+        $actual = $validator->validate($testInputs);
+        $this->assertEquals($expected, $actual);
+    }
 }
