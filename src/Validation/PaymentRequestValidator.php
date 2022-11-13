@@ -15,7 +15,7 @@ class PaymentRequestValidator
 
         $errors = [];
 
-        
+
         if (!self::checkName($name)) {
             array_push($errors, "Name is incorrect.");
         }
@@ -132,11 +132,16 @@ class PaymentRequestValidator
 
     private function checkCvv(string $cvv): bool
     {
-        if (strlen($cvv) != 3) {
+        $cvvToInt = intval($cvv);
+        if (strlen(trim($cvv)) != 3) {
             return false;
         }
 
         if (!is_numeric($cvv)) {
+            return false;
+        }
+
+        if ($cvvToInt % 1000 != $cvvToInt) {
             return false;
         }
 
