@@ -33,10 +33,30 @@ func TestEmpty(t *testing.T) {
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	const str, minor, want = "the quick fox in the bag", "", "The Quick Fox In The Bag"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		// передайте пустую строку в качестве второго агрумента
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	const str, minor, want = "the quick fox in the bag", "the", "The Quick Fox In the Bag"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		// передайте первое слово исходной строки в качестве второго аргумента
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
+}
+
+func TestBlond(t *testing.T) {
+	const str, minor, want = "hElLo wOrLd!", "", "Hello World!"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		// приколы из аськи
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
+
 }
