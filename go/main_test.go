@@ -1,9 +1,8 @@
 package main
 
 import (
-	"testing"
-
 	"github.com/kulti/titlecase"
+	"testing"
 )
 
 // Задание
@@ -33,10 +32,45 @@ func TestEmpty(t *testing.T) {
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+
+	const str, minor, want = "upgrade", "", "Upgrade"
+
+	goT := titlecase.TitleCase(str, minor)
+
+	if goT != want {
+		t.Fatalf("TitleCase(%v, %v) = %v; want %v", str, minor, goT, want)
+	}
+
 }
 
+// типо провальный тест-кейс потому что первое слово в строке всегда с большой буквы
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+
+	const str, minor, want = "dongelek upgrade home work ", "dongelek", "dongelek Upgrade Home Work "
+
+	goT := titlecase.TitleCase(str, minor)
+
+	if goT != want {
+		t.Fatalf("TitleCase(%v, %v) = %v; want %v", str, minor, goT, want)
+	}
+
+}
+
+func TestWithTableTestsAndTestify(t *testing.T) {
+	assert := assert.New(t)
+
+	addTest := []struct{ str, minor, want string }{
+		{"Dima", "", "Dima"},
+		{"Lorem opsium etc", "opsium", "Lorem opsium Etc"},
+		{"Never gonna give you up", "give you up", "Never Gonna give you up"},
+	}
+
+	for _, test := range addTest {
+
+		got := titlecase.TitleCase(test.str, test.minor)
+
+		assert.Equal(t, test.want, got)
+	}
+
 }
