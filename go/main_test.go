@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/stretchr/testify/require"
 	"testing"
 
 	"github.com/kulti/titlecase"
@@ -24,31 +25,38 @@ import (
 // TitleCase("the quick fox in the bag", "in the") = "The Quick Fox in the Bag"
 
 func TestEmpty(t *testing.T) {
-	const str, minor, want = "the quick fox in the bag", "", "the quick fox in the bag"
+	const str, minor, want = "", "", ""
 	got := titlecase.TitleCase(str, minor)
-	if got != want {
-		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
-	}
+	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+	require.Equal(t, got, want, msg)
 }
 
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
 	t.Error("not implemented")
-	const str, minor, want = "the quick fox in the bag", "", ""
+	const str, minor, want = "teenage mutant ninja turtles", "teenage", "Teenage Mutant Ninja Turtles"
 	got := titlecase.TitleCase(str, minor)
 	if got != want {
 		// передайте пустую строку в качестве второго агрумента
-		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+		msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+		require.Equal(t, got, want, msg)
 	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
 	t.Error("not implemented")
-	const str, minor, want = "the quick fox in the bag", "the", "The"
+	const str, minor, want = "the quick fox in the bag", "the", "the quick fox in the bag"
 	got := titlecase.TitleCase(str, minor)
 	if got != want {
 		// передайте первое слово исходной строки в качестве второго аргумента
-		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+		msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+		require.Equal(t, got, want, msg)
 	}
+}
+func TestWithEmptyStr(t *testing.T) {
+	const str, minor, want = "", "", ""
+	got := titlecase.TitleCase(str, minor)
+	msg := "TitleCase(" + str + ", " + minor + ") = " + got + "; want " + want
+	require.Equal(t, got, want, msg)
 }
