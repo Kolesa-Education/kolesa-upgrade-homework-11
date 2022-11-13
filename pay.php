@@ -22,12 +22,12 @@ try {
     // если валидатор вернул ошибки - склеиваем их в одну строку и выбрасываем исключение
     if (!empty($errors)) {
         $errorsString = '';
-
+        
         foreach ($errors as $error) {
-            $errorsString .= $error . PHP_EOL;
+            $errorsString .= $error . "<br>" . PHP_EOL;
         }
 
-        throw new \Exception('Невалидный запрос' . PHP_EOL . $errorsString);
+        throw new \Exception('Невалидный запрос:' . "<br>" . PHP_EOL . $errorsString);
     }
 
     // производим оплату: списываем деньги, помечаем что услуга оплачена и т.д.
