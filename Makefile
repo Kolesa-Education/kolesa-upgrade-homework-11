@@ -3,4 +3,4 @@ serve:
 	php -S localhost:8080
 # запустить тесты
 test:
-	php vendor/bin/phpunit
+	composer exec --verbose phpunit tests
