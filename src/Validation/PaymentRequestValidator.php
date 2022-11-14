@@ -38,9 +38,7 @@ class PaymentRequestValidator
 
     private function checkName(string $name): bool
     {
-        $hasSpace = str_contains($name, " ");
-
-        if (!$hasSpace) {
+        if (!str_contains($name, " ")) {
             return false;
         }
 
@@ -82,17 +80,16 @@ class PaymentRequestValidator
 
     private function checkExpiration(string $expiration): bool
     {
-        $hasSlash = str_contains($expiration, "/");
+        if (!str_contains($expiration, "/")) {
+            return false;
+        }
+
         $pairs = explode("/", $expiration);
         $firstPair = $pairs[0] ?? null;
         $secondPair = $pairs[1] ?? null;
         $firstPairInt = intval($firstPair);
         $secondPairInt = intval($secondPair);
 
-
-        if (!$hasSlash) {
-            return false;
-        }
 
         if (!$firstPair && !$secondPair) {
             return false;

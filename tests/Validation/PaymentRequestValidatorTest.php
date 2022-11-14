@@ -9,12 +9,12 @@ class PaymentRequestValidatorTest extends TestCase
 {
     public function testEmptyInputs(): void
     {
-        $empty = array(
+        $empty = [
             'name' => ' ',
             'cardNumber' => ' ',
             'expiration' => ' ',
             'cvv' => ' '
-        );
+        ];
 
         $expected = [
             "Name is incorrect.",
@@ -32,11 +32,11 @@ class PaymentRequestValidatorTest extends TestCase
 
     public function testInvalidName(): void
     {
-        $testInputs = array(
+        $testInputs = [
             'cardNumber' => '1234123412341234',
             'expiration' => '12/23',
             'cvv' => '012'
-        );
+        ];
 
         $expected = [
             "Name is incorrect."
@@ -59,22 +59,22 @@ class PaymentRequestValidatorTest extends TestCase
 
     public function testInvalidCardNumber(): void
     {
-        $testInputs = array(
+        $testInputs = [
             'name' => 'John Doe',
             'expiration' => '12/23',
             'cvv' => '012'
-        );
+        ];
 
         $expected = [
             "Card number is incorrect."
         ];
 
-        $invalidFields = array (
+        $invalidFields = [
             $testInputs + ['cardNumber' => '1'],
             $testInputs + ['cardNumber' => '12341234123412345'],
             $testInputs + ['cardNumber' => '1234123412k41234'],
             $testInputs + ['cardNumber' => '1234 234 12341234'],
-        );
+        ];
 
         $validator = new PaymentRequestValidator();
 
@@ -86,17 +86,17 @@ class PaymentRequestValidatorTest extends TestCase
 
     public function testInvalidExpiration(): void
     {
-        $testInputs = array(
+        $testInputs = [
             'name' => 'John Doe',
             'cardNumber' => '1234123412341234',
             'cvv' => '012'
-        );
+        ];
 
         $expected = [
             "Expiration is invalid."
         ];
 
-        $invalidFields = array (
+        $invalidFields = [
             $testInputs + ['expiration' => '12/30'],
             $testInputs + ['expiration' => '12/12'],
             $testInputs + ['expiration' => '00/12'],
@@ -104,7 +104,7 @@ class PaymentRequestValidatorTest extends TestCase
             $testInputs + ['expiration' => '12.22'],
             $testInputs + ['expiration' => '1222'],
             $testInputs + ['expiration' => '222'],
-        );
+        ];
 
         $validator = new PaymentRequestValidator();
 
@@ -116,24 +116,24 @@ class PaymentRequestValidatorTest extends TestCase
 
     public function testInvalidCvv(): void
     {
-        $testInputs = array(
+        $testInputs = [
             'name' => 'John Doe',
             'cardNumber' => '1234123412341234',
             'expiration' => '12/23',
-        );
+        ];
 
         $expected = [
             "Invalid CVV."
         ];
 
-        $invalidFields = array (
+        $invalidFields = [
             $testInputs + ['cvv' => '0'],
             $testInputs + ['cvv' => '01'],
             $testInputs + ['cvv' => '0123'],
             $testInputs + ['cvv' => '0 1'],
             $testInputs + ['cvv' => ' .1'],
             $testInputs + ['cvv' => '1 1'],
-        );
+        ];
 
         $validator = new PaymentRequestValidator();
 
@@ -145,12 +145,12 @@ class PaymentRequestValidatorTest extends TestCase
 
     public function testAllCorrect(): void
     {
-        $testInputs = array(
+        $testInputs = [
             'name' => 'John Doe',
             'cardNumber' => '1234123412341234',
             'expiration' => '12/23',
             'cvv' => '012'
-        );
+        ];
 
         $expected = [];
 
