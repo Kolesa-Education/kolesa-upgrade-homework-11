@@ -16,7 +16,6 @@ const DEFAULT_AMOUNT = 5000;
 
 try {
     $validator = new PaymentRequestValidator();
-
     $errors = $validator->validate($_POST);
 
     // если валидатор вернул ошибки - склеиваем их в одну строку и выбрасываем исключение
@@ -48,5 +47,5 @@ try {
     die($e->getMessage());
 }
 
-header('Location: http://localhost:8080');
-die('successful payment');
+// header('Location: http://localhost:8080');
+// die('successful payment');
