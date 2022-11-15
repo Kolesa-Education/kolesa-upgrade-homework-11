@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/kulti/titlecase"
+	"github.com/stretchr/testify/require"
 )
 
 // Задание
@@ -23,6 +24,12 @@ import (
 // TitleCase("the quick fox in the bag", "") = "The Quick Fox In The Bag"
 // TitleCase("the quick fox in the bag", "in the") = "The Quick Fox in the Bag"
 
+type testCase struct {
+	str   string
+	minor string
+	want  string
+}
+
 func TestEmpty(t *testing.T) {
 	const str, minor, want = "", "", ""
 	got := titlecase.TitleCase(str, minor)
@@ -32,11 +39,39 @@ func TestEmpty(t *testing.T) {
 }
 
 func TestWithoutMinor(t *testing.T) {
-	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	cases := []testCase{
+		{
+			str:   "the quick fox in the bag",
+			minor: "",
+			want:  "The Quick Fox In The Bag",
+		},
+		{
+			str:   "kompot",
+			minor: "",
+			want:  "Kompot",
+		},
+	}
+	for _, value := range cases {
+		got := titlecase.TitleCase(value.str, value.minor)
+		require.Equal(t, value.want, got)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
-	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	cases := []testCase{
+		{
+			str:   "the quick fox in the bag",
+			minor: "",
+			want:  "The Quick Fox In the Bag",
+		},
+		{
+			str:   "ilon the musk",
+			minor: "",
+			want:  "Ilon the Musk",
+		},
+	}
+	for _, value := range cases {
+		got := titlecase.TitleCase(value.str, value.minor)
+		require.Equal(t, value.want, got)
+	}
 }
