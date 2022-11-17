@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/kulti/titlecase"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -43,7 +44,6 @@ func TestWithoutMinor(t *testing.T) {
 
 }
 
-// типо провальный тест-кейс потому что первое слово в строке всегда с большой буквы
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
 
@@ -58,7 +58,7 @@ func TestWithMinorInFirst(t *testing.T) {
 }
 
 func TestWithTableTestsAndTestify(t *testing.T) {
-	assert := assert.New(t)
+	require := require.New(t)
 
 	addTest := []struct{ str, minor, want string }{
 		{"Dima", "", "Dima"},
@@ -67,10 +67,8 @@ func TestWithTableTestsAndTestify(t *testing.T) {
 	}
 
 	for _, test := range addTest {
-
 		got := titlecase.TitleCase(test.str, test.minor)
-
-		assert.Equal(t, test.want, got)
+		require.Equal(t, test.want, got)
 	}
 
 }
