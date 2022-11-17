@@ -68,7 +68,7 @@ func TestWithTableTestsAndTestify(t *testing.T) {
 
 	for _, test := range addTest {
 		got := titlecase.TitleCase(test.str, test.minor)
-		require.Equal(t, test.want, got)
+		require.Equal(test.want, got)
 	}
 
 }
