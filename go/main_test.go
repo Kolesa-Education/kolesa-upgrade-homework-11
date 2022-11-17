@@ -47,7 +47,7 @@ func TestWithoutMinor(t *testing.T) {
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
 
-	const str, minor, want = "dongelek upgrade home work ", "dongelek", "dongelek Upgrade Home Work "
+	const str, minor, want = "dongelek upgrade home work ", "dongelek", "Dongelek Upgrade Home Work "
 
 	goT := titlecase.TitleCase(str, minor)
 
