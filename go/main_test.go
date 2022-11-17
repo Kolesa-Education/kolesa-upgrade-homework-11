@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/stretchr/testify/require"
 	"testing"
 
 	"github.com/kulti/titlecase"
@@ -30,13 +31,30 @@ func TestEmpty(t *testing.T) {
 		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
 	}
 }
-
 func TestWithoutMinor(t *testing.T) {
 	// передайте пустую строку в качестве второго агрумента
-	t.Error("not implemented")
+	//t.Error("not implemented")
+	const str, minor, want = "The Quick Fox in the Bag", "", "The Quick Fox in the Bag"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
 
 func TestWithMinorInFirst(t *testing.T) {
 	// передайте первое слово исходной строки в качестве второго аргумента
-	t.Error("not implemented")
+	//t.Error("not implemented")
+	const str, minor, want = "the quick fox in the bag", "the", "the quick fox in the bag"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
 }
+func TestAllMinor(t *testing.T) {
+	// передайте всю строку в качестве второго аргумента
+	//t.Error("not implemented")
+	const str, minor, want = "the quick fox in the bag", "the quick fox in the bag", "the quick fox in the bag"
+	got := titlecase.TitleCase(str, minor)
+	if got != want {
+		t.Errorf("TitleCase(%v, %v) = %v; want %v", str, minor, got, want)
+	}
