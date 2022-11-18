@@ -19,6 +19,9 @@ try {
 
     $errors = $validator->validate($_POST);
 
+
+
+
     // если валидатор вернул ошибки - склеиваем их в одну строку и выбрасываем исключение
     if (!empty($errors)) {
         $errorsString = '';
